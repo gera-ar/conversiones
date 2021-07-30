@@ -3,8 +3,6 @@ Menu, Tray, Tip, MK-audioConverter
 Menu, Tray, Add, Información, info
 Menu, Tray, Add, Cerrar el programa, Exit
 
-
-Process, Close, cmd.exe
 Gui, Add, Button, vImportButton gImportFile, Importar archivo a convertir
 Gui, Add, Text,, Ingrese el nombre del archivo saliente
 Gui, Add, Edit, vNewName
@@ -26,30 +24,23 @@ Return
 
 Convert:
 Gui, Submit, NoHide
-Command = Files\ffmpeg -i "%Path%" -ac 2 -ab %Bitrate% -f %FileFormat% "%ruta%\%NewName%.%FileFormat%
-Run cmd.exe /c %Command%,, Hide
-Sleep 250
-Loop
-{
-Process, Exist, cmd.exe
-If ErrorLevel
+Command = %a_workingDir%\Files\ffmpeg.exe -i "%Path%" -ac 2 -ab %Bitrate% -f %FileFormat% "%ruta%\%NewName%.%FileFormat%
 GuiControl,, Button, Convirtiendo... por favor espere
-Else {
+runWait cmd.exe /c %Command%,, Hide
 Gosub Msg
-Break
-}
-}
-Return
+return
 
 Msg:
 SoundPlay Files\Finish.wav
 MsgBox,4,Conversión realizada correctamente;, ?Abrir la ruta del archivo convertido?
 IfMsgBox yes
 {
-run % ruta
 GuiControl,, ImportButton,Importar archivo a convertir
 GuiControl,, NewName
 GuiControl,, Button, Convertir
+guiControl, focus, importButton
+run % ruta
+exitApp
 }
 IfMsgBox no
 reload
