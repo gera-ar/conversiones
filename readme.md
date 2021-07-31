@@ -10,6 +10,8 @@ La idea de este script es realizar conversiones rápidamente con solo enfocar el
 * alt + control + s; suspende y reanuda los atajos del script.
 * alt + control + e; Cierra el script.
 
+Pulsando aplicaciones sobre el ícono de la bandeja de sistemas, se puede modificar la calidad del audio resultante a través del bitrate. El valor por defecto es 128 kbps.
+
 ## ¿Como funciona?
 Cuando estamos enfocados sobre un archivo de audio, video, o documento, al presionar f4 se activa un menú contextual donde podremos seleccionar el formato a convertir.  
 Ingresamos al submenú del tipo de archivo que vamos a convertir y pulsamos intro sobre el formato de salida, lo que iniciará el proceso. Al finalizar se realizará un sonido que indica la finalización de la conversión.  

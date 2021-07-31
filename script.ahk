@@ -4,14 +4,27 @@ hks[2] := ["+f4", "folderConverter", "convierte todos los archivos de la carpeta
 hks[3] := ["!^s", "suspend", "Suspende y reanuda el script"]
 hks[4] := ["!^q", "exit", "Cierra el script"]
 
-main = Script iniciado
+soundPlay files\start.mp3
 
 #include files\gui.ahk
 #include files\hotkeys.ahk
 #include files\speak.ahk
 
+IfNotExist, files\cuality.ini
+	iniWrite, 128, files\cuality.ini, audio_bitrate, value
+else
+	iniRead, bitrate, files\cuality.ini, audio_bitrate, value
+
 menu, tray, noStandard
 menu, tray, tip, Conversiones
+menu, tray, add, Lista de comandos, commands
+menu, tray, add
+menu, bitrate, add, 128, audio_bitrate
+menu, bitrate, add, 192, audio_bitrate
+menu, bitrate, add, 256, audio_bitrate
+menu, bitrate, add, 320, audio_bitrate
+menu, tray, add,% "Audio_bitrate. El valor actual es " bitrate " kbps. ", :bitrate
+menu, tray, add, Instrucciones, readme
 menu, tray, add, Suspender el script, suspend
 menu, tray, add, Cerrar el script, exit
 
@@ -43,6 +56,11 @@ menu, documento, add, o&tros, otros
 menu, conversiones, add, documento, :documento
 return
 
+audio_bitrate:
+	iniWrite, %a_thisMenuItem%, files\cuality.ini, audio_bitrate, value
+	
+	reload
+
 fileConverter:
 send ^c
 filePath := clipboard
@@ -59,14 +77,14 @@ gui, show,, conversiones
 return
 
 conversion() {
-	global folderPath, fileFormat
+	global folderPath, fileFormat, bitrate
 	gui, submit, hide
 	sleep 100
 	message("conversión iniciada")
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		runWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a 192000 "%dirName%\%name%.%fileFormat%",, hide
+		runWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\%name%.%fileFormat%",, hide
 		message(fileName)
 	}
 	soundPlay files\finish.mp3
@@ -78,12 +96,12 @@ closeGui() {
 }
 
 audio_video(itemName) {
-	global filePath
+	global filePath, bitrate
 	sleep 100
 	mute()
 	message("conversión iniciada")
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
-	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a 192000 "%dirName%\%name%.%itemName%"
+	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a %bitrate%000 "%dirName%\%name%.%itemName%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
 	message("conversión finalizada")
@@ -102,14 +120,14 @@ documento(itemName) {
 }
 
 otros(itemName, itemPos, menuName) {
-	global filePath
+	global filePath, bitrate
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
 	sleep 50
 	inputBox, extension, Por favor ingresa la extensión a convertir sin el punto
 	if menuName = "documento"
 		command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%extension%" "%filePath%"
 	else if (menuName="audio" or menuName="video")
-		command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a 192000 "%dirName%\%name%.%extension%"
+		command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a %bitrate%000 "%dirName%\%name%.%extension%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
 }
@@ -132,6 +150,8 @@ getPath() {
 commands()
 return
 
+readme:
+	run files\readme.html
 suspend() {
 static t
 suspend
