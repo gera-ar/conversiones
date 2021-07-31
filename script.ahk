@@ -6,9 +6,9 @@ hks[4] := ["!^q", "exit", "Cierra el script"]
 
 main = Script iniciado
 
-#include hks\gui.ahk
-#include hks\hotkeys.ahk
-#include tts\speak.ahk
+#include files\gui.ahk
+#include files\hotkeys.ahk
+#include files\speak.ahk
 
 menu, tray, noStandard
 menu, tray, tip, Conversiones
@@ -55,16 +55,19 @@ gui, add, text,, Seleccione el formato del archivo
 gui, add, listBox, vFileFormat, mp3||flac|m4a|ogg|wav|wma|mp4|avi|flv|mov|mkv
 gui, add, button, gConversion, iniciar la conversión
 gui, add, button, gCloseGui, Cancelar
-gui, show
+gui, show,, conversiones
 return
 
 conversion() {
 	global folderPath, fileFormat
 	gui, submit, hide
+	sleep 100
+	message("conversión iniciada")
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		runWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" "%dirName%\%name%.%fileFormat%",, hide
+		runWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a 192000 "%dirName%\%name%.%fileFormat%",, hide
+		message(fileName)
 	}
 	soundPlay files\finish.mp3
 	gui, destroy
@@ -76,18 +79,26 @@ closeGui() {
 
 audio_video(itemName) {
 	global filePath
+	sleep 100
+	mute()
+	message("conversión iniciada")
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
-	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" "%dirName%\%name%.%itemName%"
+	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a 192000 "%dirName%\%name%.%itemName%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
+	message("conversión finalizada")
 }
 
 documento(itemName) {
 	global filePath
+	sleep 100
+	mute()
+	message("conversión iniciada")
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
 	command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%itemName%" "%filePath%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
+	message("conversión finalizada")
 }
 
 otros(itemName, itemPos, menuName) {
@@ -98,7 +109,7 @@ otros(itemName, itemPos, menuName) {
 	if menuName = "documento"
 		command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%extension%" "%filePath%"
 	else if (menuName="audio" or menuName="video")
-		command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" "%dirName%\%name%.%extension%"
+		command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a 192000 "%dirName%\%name%.%extension%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
 }
