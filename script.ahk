@@ -156,7 +156,7 @@ suspend() {
 static t
 suspend
 	menu, tray, toggleCheck, Suspender el script
-	message((t:=!t)? "Script suspendido" : "Script reactivado")
+	message((a_isSuspended)? "Script suspendido" : "Script reactivado")
 }
 
 exit:

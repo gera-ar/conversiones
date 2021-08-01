@@ -1,11 +1,11 @@
 <h1 id="conversiones">Conversiones</h1>
-<p>Script creado por Gerardo Késsler. <a href="mailTo:ReaperYOtrasYerbas@gmail.com">Reaper y otras yerbas</a><br />
+<p>Script creado por Gerardo Késsler. <a href="mailTo:ReaperYOtrasYerbas@gmail.com">ReaperYOtrasYerbas@gmail.com</a><br />
 La idea de este script es realizar conversiones rápidamente con solo enfocar el elemento a convertir, sin interfaces gráficas y con solo un par de atajos de teclado.</p>
 <h2 id="comandos-del-script">Comandos del script:</h2>
 <ul>
+<li>shift + f1; activa una ventana con la lista de comandos y opciones para modificar los atajos.</li>
 <li>f4; Convierte el archivo con el foco actual.</li>
 <li>shift + f4; Convierte todos los archivos que se encuentran en la carpeta actual, incluyendo las subcarpetas.</li>
-<li>shift + f1; lista los comandos del script y permite cambiarlos.</li>
 <li>alt + control + s; suspende y reanuda los atajos del script.</li>
 <li>alt + control + e; Cierra el script.</li>
 </ul>
@@ -14,14 +14,15 @@ La idea de este script es realizar conversiones rápidamente con solo enfocar el
 <p>Cuando estamos enfocados sobre un archivo de audio, video, o documento, al presionar f4 se activa un menú contextual donde podremos seleccionar el formato a convertir.<br />
 Ingresamos al submenú del tipo de archivo que vamos a convertir y pulsamos intro sobre el formato de salida, lo que iniciará el proceso. Al finalizar se realizará un sonido que indica la finalización de la conversión.<br />
 En el caso de que el formato deseado no se encuentre en la lista, la última opción de cada apartado es el ítem otros.<br />
-Al pulsar en esta opción se activa un cuadro en el que deberemos escribir el formato de salida sin el punto, por ejemplo "opus, sin comillas, y pulsar intro, lo que iniciará la conversión.<br />
-En el caso de querer convertir todos los archivos de una carpeta, pulsamos el atajo correspondiente situados dentro de la misma. Al pulsarlo se activa una pequeña ventana gui con una lista de formatos de salida. Seleccionamos el correcto y pulsamos en la opción iniciar conversión, y al finalizar se reproducirá un sonido que indica la finalización del proceso.<br />
+Al pulsar en esta opción se activa un cuadro en el que deberemos escribir el formato de salida sin el punto, por ejemplo "opus, sin comillas. Al pulsar intro se iniciará la conversión.<br />
+En el caso de querer convertir todos los archivos de una carpeta, pulsamos el atajo correspondiente situados dentro de la misma. Al pulsarlo se activa una pequeña ventana gui con una lista de formatos de salida. Seleccionamos el correcto y pulsamos en el botón iniciar conversión, y al finalizar se reproducirá un sonido que indica la finalización del proceso.<br />
 nota:<br />
-En el caso de las conversiones entre documentos es conveniente copiar el archivo a convertir al portapapeles antes de presionar el atajo para iniciar el proceso.</p>
-<h2 id="algunas-aclaraciones">Algunas aclaraciones:</h2>
+Fundamentalmente con los documentos, es conveniente antes de presionar el atajo para convertir el archivo copiarlo al portapapeles.<br />
+Por lo que luego de enfocar el archivo a convertir hay que presionar control + c, y luego el atajo que activa la conversión individual.</p>
+<h2 id="formatos-soportados">Formatos soportados:</h2>
 <p>El ffmpeg permite convertir entre una extensa lista de formatos. Entre video y video, entre video y audio, y entre audio y audio. para una lista detallada de los formatos soportados, haga click <a href="https://es.wikipedia.org/wiki/FFmpeg">aquí</a><br />
-Para las conversiones entre documentos se utiliza el programa pandoc. Para una lista detallada de formatos soportados, pulse el siguiente <a href="https://es.wikipedia.org/wiki/Pandoc">link</a></p>
+Para las conversiones entre documentos se utiliza el programa pandoc. Para una lista detallada de formatos soportados, pulse el siguiente <a href="https://es.wikipedia.org/wiki/Pandoc">link de wikipedia</a></p>
 <h3 id="error-en-las-librerías">Error en las librerías:</h3>
-<p>Puede que en algunos sistemas operativos no funcionen correctamente ffmpeg o pandoc por la ausencia de siertas librerías importantes para el sistema.<br />
+<p>Puede que en algunos sistemas operativos no funcionen correctamente FFMPEG o pandoc, por la ausencia de siertas librerías importantes para el sistema.<br />
 En tal caso puede descargar un instalador de las librerías necesarias desde el siguiente <a href="https://www.mediafire.com/file/0a6bpgnr9rhf4kp/MPVCI_2.5_setup.rar/file">enlace directo</a><br />
-lo que debería solucionar el problema.</p>
+Solo hay que instalar el archivo, lo que debería solucionar el problema. La contraseña es “reaper”, sin comillas.</p>
