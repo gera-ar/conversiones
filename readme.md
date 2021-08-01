@@ -18,9 +18,6 @@ Ingresamos al submenú del tipo de archivo que vamos a convertir y pulsamos intr
 En el caso de que el formato deseado no se encuentre en la lista, la última opción de cada apartado es el ítem otros.  
 Al pulsar en esta opción se activa un cuadro en el que deberemos escribir el formato de salida sin el punto, por ejemplo "opus, sin comillas. Al  pulsar intro se iniciará la conversión.  
 En el caso de querer convertir todos los archivos de una carpeta, pulsamos el atajo correspondiente situados dentro de la misma. Al pulsarlo se activa una pequeña ventana gui con una lista de formatos de salida. Seleccionamos el correcto y pulsamos en el botón iniciar conversión, y al finalizar se reproducirá un sonido que indica la finalización del proceso.  
-nota:  
-Fundamentalmente con los documentos, es conveniente antes de presionar el atajo para convertir el archivo copiarlo al portapapeles.  
-Por lo que luego de enfocar el archivo a convertir hay que presionar control + c, y luego el atajo que activa la conversión individual.  
 
 ## Formatos soportados:
 El ffmpeg permite convertir entre una extensa lista de formatos. Entre video y video, entre video y audio, y entre audio y audio.

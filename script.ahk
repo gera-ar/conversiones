@@ -57,13 +57,11 @@ menu, conversiones, add, documento, :documento
 return
 
 audio_bitrate:
-	iniWrite, %a_thisMenuItem%, files\cuality.ini, audio_bitrate, value
-	
+	iniWrite, %a_thisMenuItem%, files\cuality.ini, audio_bitrate, value	
 	reload
 
 fileConverter:
-send ^c
-filePath := clipboard
+	filePath := getFilePath()
 menu, conversiones, show
 return
 
@@ -144,6 +142,20 @@ getPath() {
 			}
 		}
 	}
+}
+
+getFilePath() {
+	WinGetClass, winClass, % "ahk_id" . hWnd := WinExist("A")
+	if !(winClass ~= "(Cabinet|Explore)WClass")
+		Return
+	for window in ComObjCreate("Shell.Application").Windows
+		if (hWnd = window.HWND) && (oShellFolderView := window.document)
+			break
+	for item in oShellFolderView.SelectedItems
+		result .= (result = "" ? "" : "`n") . item.path
+	if !result
+		result := oShellFolderView.Folder.Self.Path
+	Return result
 }
 
 +f1::
