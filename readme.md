@@ -8,7 +8,7 @@ La idea de este script es realizar conversiones rápidamente con solo enfocar el
 * f4; Convierte el archivo con el foco actual.
 * shift + f4; Convierte todos los archivos que se encuentran en la carpeta actual, incluyendo las subcarpetas.
 * alt + control + s; suspende y reanuda los atajos del script.
-* alt + control + e; Cierra el script.
+* alt + control + q; Cierra el script.
 
 Pulsando aplicaciones sobre el ícono de la bandeja de sistemas, se puede modificar la calidad del audio resultante a través del bitrate. El valor por defecto es 128 kbps.
 
