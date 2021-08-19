@@ -97,8 +97,15 @@ audio_video(itemName) {
 	global filePath, bitrate
 	sleep 100
 	mute()
-	message("conversión iniciada")
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
+	if (extensionName = itemName) {
+		sleep 100
+		msgBox, 0, Proceso cancelado;, No se puede convertir %fileName% en %itemName%. Los formatos de entrada y de salida son idénticos.
+		return
+	}
+	sleep 75
+	mute()
+	message("convirtiendo " fileName " a " itemName)
 	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a %bitrate%000 "%dirName%\%name%.%itemName%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
@@ -107,10 +114,15 @@ audio_video(itemName) {
 
 documento(itemName) {
 	global filePath
-	sleep 100
-	mute()
-	message("conversión iniciada")
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
+	if (extensionName = itemName) {
+		sleep 100
+		msgBox, 0, Proceso cancelado;, No se puede convertir %fileName% en %itemName%. Los formatos de entrada y de salida son idénticos.
+		return
+	}
+	sleep 75
+	mute()
+	message("convirtiendo " fileName " a " itemName)
 	command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%itemName%" "%filePath%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
