@@ -61,6 +61,7 @@ audio_bitrate:
 	reload
 
 fileConverter:
+	SoundPlay C:\Windows\Media\Windows Exclamation.wav
 	filePath := getFilePath()
 menu, conversiones, show
 return
@@ -172,6 +173,10 @@ getFilePath() {
 
 +f1::
 commands()
+return
+
+ListGuiEscape:
+gui, list:destroy
 return
 
 readme:
