@@ -181,6 +181,8 @@ return
 
 readme:
 	run files\readme.html
+	return
+
 suspend() {
 static t
 suspend
