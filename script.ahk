@@ -1,8 +1,8 @@
 ﻿hks := array()
-hks[1] := ["f4", "fileConverter", "Convertir el archivo con el foco"]
+hks[1] := ["^f4", "fileConverter", "Convertir el archivo con el foco"]
 hks[2] := ["+f4", "folderConverter", "convierte todos los archivos de la carpeta actual"]
-hks[3] := ["!^s", "suspend", "Suspende y reanuda el script"]
-hks[4] := ["!^q", "exit", "Cierra el script"]
+hks[3] := ["^+f4", "suspend", "Suspende y reanuda el script"]
+hks[4] := ["^+q", "exit", "Cierra el script"]
 
 soundPlay files\start.mp3
 
@@ -68,6 +68,9 @@ return
 
 folderConverter:
 folderPath := getPath()
+MsgBox, 4, Atención,% "La ruta de la carpeta con los archivos a convertir es; " folderPath ". Si es correcta pulsa el botón si, de lo contrario, el botón no para seleccionar la ruta manualmente"
+IfMsgBox no
+	FileSelectFolder, folderPath, *, 2
 gui, add, text,, Seleccione el formato del archivo
 gui, add, listBox, vFileFormat, mp3||flac|m4a|ogg|wav|wma|mp4|avi|flv|mov|mkv
 gui, add, button, gConversion, iniciar la conversión
