@@ -83,10 +83,11 @@ conversion() {
 	gui, submit, hide
 	sleep 100
 	message("conversión iniciada")
+	FileCreateDir, %folderPath%\convertidos
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		runWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\%name%.%fileFormat%",, hide
+		RunWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\convertidos\%name%.%fileFormat%",, hide
 		message(fileName)
 	}
 	soundPlay files\finish.mp3
