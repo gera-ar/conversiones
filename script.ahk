@@ -105,11 +105,12 @@ conversion() {
 	gui, submit, hide
 	sleep 100
 	message(lang["converting"])
-	FileCreateDir,% folderPath "\" lang["convert_folder_name"]
+	convert_folder_name := lang["convert_folder_name"]
+	FileCreateDir,% folderPath "\" convert_folder_name
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		RunWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\convertidos\%name%.%fileFormat%",, hide
+		RunWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\%convert_folder_name%\%name%.%fileFormat%",, hide
 		message(fileName)
 	}
 	soundPlay files\finish.mp3
