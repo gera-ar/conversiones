@@ -2,10 +2,10 @@
 	global hks, lang
 	gui, List:Default
 	Gui, List:Add, ListView,,% lang["command"] "|" lang["hk"] ":" 
-	iniRead, file, files\config.ini
+	iniRead, file, files\hotkeys.ini
 	for i, key in strSplit(file, "`n")
 	{
-		iniRead, value, files\config.ini,% key, hk
+		iniRead, value, files\hotkeys.ini,% key, hk
 		value := strReplace(value, "^", lang["control"])
 		value := strReplace(value, "+", lang["shift"])
 		value := strReplace(value, "!", lang["alt"])
@@ -33,7 +33,7 @@ close() {
 config() {
 	global oldHK, newHK, hks, fila, lang
 	fila := lv_getNext()
-	iniRead, oldHK, files\config.ini,% hks[fila][2], hk
+	iniRead, oldHK, files\hotkeys.ini,% hks[fila][2], hk
 	gui, list:destroy
 	gui, config:default
 	gui, config:add, text,,% lang["new_hk"]
@@ -48,7 +48,7 @@ save() {
 	gui, config:submit, hide
 	if newHK
 	{
-		iniWrite,% newHK, files\config.ini,% hks[fila][2], hk
+		iniWrite,% newHK, files\hotkeys.ini,% hks[fila][2], hk
 		hotkey,% oldHK,% hks[fila][2], off
 		hotkey,% newHK,% hks[fila][2], on
 		gui, config:destroy

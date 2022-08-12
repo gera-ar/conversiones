@@ -1,3 +1,4 @@
-﻿*.exe
+﻿files/strings_backup.ini
+*.exe
 desktop.ini
 *.ignore

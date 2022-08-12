@@ -1,8 +1,9 @@
 ﻿lang := {}
-IniRead, LangIniContent, files\lang.ini
-for i, key in StrSplit(LangIniContent, "`n")
+IniRead, lang_ini_content, files\strings.ini
+IniRead, lang_value, files\settings.ini, language, value
+for i, key in StrSplit(lang_ini_content, "`n")
 {
-	IniRead, string, files\lang.ini,% key, ES
+	IniRead, string, files\strings.ini,% key,% lang_value
 	lang[key] := string
 }
 
@@ -18,15 +19,20 @@ soundPlay files\start.mp3
 #include files\hotkeys.ahk
 #include files\speak.ahk
 
-IfNotExist, files\cuality.ini
-	iniWrite, 128, files\cuality.ini, audio_bitrate, value
+IfNotExist, files\settings.ini
+	iniWrite, 128, files\settings.ini, audio_bitrate, value
 else
-	iniRead, bitrate, files\cuality.ini, audio_bitrate, value
+	iniRead, bitrate, files\settings.ini, audio_bitrate, value
 
 menu, tray, noStandard
 menu, tray, tip,% lang["script_name"]
+
+menu, idioma, add, Español, LangWrite
+menu, idioma, add, Türk, LangWrite
+menu, tray, add, languages, :idioma
+
 menu, tray, add,% lang["commands_list"], commands
-menu, tray, add
+
 menu, bitrate, add, 128, audio_bitrate
 menu, bitrate, add, 192, audio_bitrate
 menu, bitrate, add, 256, audio_bitrate
@@ -64,8 +70,16 @@ menu, documento, add,% lang["others"], otros
 menu, conversiones, add,% lang["document"], :documento
 return
 
+LangWrite(ItemName) {
+	if (ItemName == "Español")
+		IniWrite, ES, files\settings.ini, language, value
+	else if (ItemName == "Türk")
+		IniWrite, TR, files\settings.ini, language, value
+	reload
+}
+
 audio_bitrate:
-	iniWrite, %a_thisMenuItem%, files\cuality.ini, audio_bitrate, value	
+	iniWrite, %a_thisMenuItem%, files\settings.ini, audio_bitrate, value	
 	reload
 
 fileConverter:
