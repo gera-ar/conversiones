@@ -1,8 +1,16 @@
-﻿hks := array()
-hks[1] := ["^f4", "fileConverter", "Convertir el archivo con el foco"]
-hks[2] := ["+f4", "folderConverter", "convierte todos los archivos de la carpeta actual"]
-hks[3] := ["^+f4", "suspend", "Suspende y reanuda el script"]
-hks[4] := ["^+q", "exit", "Cierra el script"]
+﻿lang := {}
+IniRead, LangIniContent, files\lang.ini
+for i, key in StrSplit(LangIniContent, "`n")
+{
+	IniRead, string, files\lang.ini,% key, ES
+	lang[key] := string
+}
+
+hks := array()
+hks[1] := ["^f4", "fileConverter", lang["convert_file"]]
+hks[2] := ["+f4", "folderConverter", lang["convert_folder"]]
+hks[3] := ["^+f4", "suspend", lang["toggle_suspend"]]
+hks[4] := ["^+q", "exit", lang["script_close"]]
 
 soundPlay files\start.mp3
 
@@ -16,17 +24,17 @@ else
 	iniRead, bitrate, files\cuality.ini, audio_bitrate, value
 
 menu, tray, noStandard
-menu, tray, tip, Conversiones
-menu, tray, add, Lista de comandos, commands
+menu, tray, tip,% lang["script_name"]
+menu, tray, add,% lang["commands_list"], commands
 menu, tray, add
 menu, bitrate, add, 128, audio_bitrate
 menu, bitrate, add, 192, audio_bitrate
 menu, bitrate, add, 256, audio_bitrate
 menu, bitrate, add, 320, audio_bitrate
-menu, tray, add,% "Audio_bitrate. El valor actual es " bitrate " kbps. ", :bitrate
-menu, tray, add, Instrucciones, readme
-menu, tray, add, Suspender el script, suspend
-menu, tray, add, Cerrar el script, exit
+menu, tray, add,% lang["bitrate_value"] " " bitrate " kbps. ", :bitrate
+menu, tray, add,% lang["instructions"], readme
+menu, tray, add,% lang["suspend"], suspend
+menu, tray, add,% lang["exit"], exit
 
 menu, conversiones, add
 menu, audio, add, mp3, audio_video
@@ -34,8 +42,8 @@ menu, audio, add, flac, audio_video
 menu, audio, add, OGG, audio_video
 menu, audio, add, m4a, audio_video
 menu, audio, add, wav, audio_video
-menu, audio, add, o&tros, otros
-menu, conversiones, add, audio, :audio
+menu, audio, add,% lang["others"], otros
+menu, conversiones, add,% lang["audio"], :audio
 
 menu, conversiones, add
 menu, video, add, mp4, audio_video
@@ -43,8 +51,8 @@ menu, video, add, avi, audio_video
 menu, video, add, mpg, audio_video
 menu, video, add, flv, audio_video
 menu, video, add, mkv, audio_video
-menu, video, add, o&tros, otros
-menu, conversiones, add, video, :video
+menu, video, add,% lang["others"], otros
+menu, conversiones, add,% lang["video"], :video
 
 menu, conversiones, add
 menu, documento, add, txt, documento
@@ -52,8 +60,8 @@ menu, documento, add, html, documento
 menu, documento, add, md, documento
 menu, documento, add, rtf, documento
 menu, documento, add, epub, documento
-menu, documento, add, o&tros, otros
-menu, conversiones, add, documento, :documento
+menu, documento, add,% lang["others"], otros
+menu, conversiones, add,% lang["document"], :documento
 return
 
 audio_bitrate:
@@ -68,22 +76,22 @@ return
 
 folderConverter:
 folderPath := getPath()
-MsgBox, 4, Atención,% "La ruta de la carpeta con los archivos a convertir es; " folderPath ". Si es correcta pulsa el botón si, de lo contrario, el botón no para seleccionar la ruta manualmente"
+MsgBox, 4,% lang["attention"],% lang["path_folder_1"] " " folderPath lang["folder_path_2"]
 IfMsgBox no
 	FileSelectFolder, folderPath, *, 2
-gui, add, text,, Seleccione el formato del archivo
+gui, add, text,,% lang["select_format"]
 gui, add, listBox, vFileFormat, mp3||flac|m4a|ogg|wav|wma|mp4|avi|flv|mov|mkv
-gui, add, button, gConversion, iniciar la conversión
-gui, add, button, gCloseGui, Cancelar
-gui, show,, conversiones
+gui, add, button, gConversion,% lang["start_conversion"]
+gui, add, button, gCloseGui,% lang["cancel"]
+gui, show,,% lang["script_name"]
 return
 
 conversion() {
 	global folderPath, fileFormat, bitrate
 	gui, submit, hide
 	sleep 100
-	message("conversión iniciada")
-	FileCreateDir, %folderPath%\convertidos
+	message(lang["converting"])
+	FileCreateDir,% folderPath "\" lang["convert_folder_name"]
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
@@ -99,39 +107,39 @@ closeGui() {
 }
 
 audio_video(itemName) {
-	global filePath, bitrate
+	global filePath, bitrate, lang
 	sleep 100
 	mute()
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
 	if (extensionName = itemName) {
 		sleep 100
-		msgBox, 0, Proceso cancelado;, No se puede convertir %fileName% en %itemName%. Los formatos de entrada y de salida son idénticos.
+		msgBox, 0,% lang["cancel_message_1"] " " fileName " " lang["cancel_message_2"] " " itemName lang["cancel_message_3"]
 		return
 	}
 	sleep 75
 	mute()
-	message("convirtiendo " fileName " a " itemName)
+	message(lang["convert_to"] " " itemName)
 	command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a %bitrate%000 "%dirName%\%name%.%itemName%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
-	message("conversión finalizada")
+	message(lang["convert_finish"])
 }
 
 documento(itemName) {
-	global filePath
+	global filePath, lang
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
 	if (extensionName = itemName) {
 		sleep 100
-		msgBox, 0, Proceso cancelado;, No se puede convertir %fileName% en %itemName%. Los formatos de entrada y de salida son idénticos.
+		msgBox, 0,% lang["cancel_message_1"] " " fileName " " lang["cancel_message_2"] " " itemName lang["cancel_message_3"]
 		return
 	}
 	sleep 75
 	mute()
-	message("convirtiendo " fileName " a " itemName)
+	message(lang["convert_to"] " " itemName)
 	command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%itemName%" "%filePath%"
 	runWait cmd.exe /c %command%,, hide
 	soundPlay files\finish.mp3
-	message("conversión finalizada")
+	message(lang["convert_finish"])
 }
 
 otros(itemName, itemPos, menuName) {
@@ -189,11 +197,12 @@ readme:
 
 suspend() {
 static t
+global lang
 suspend
-	menu, tray, toggleCheck, Suspender el script
-	message((a_isSuspended)? "Script suspendido" : "Script reactivado")
+	menu, tray, toggleCheck,% lang["suspend_script"]
+	message((a_isSuspended)?lang["suspend_message_1"] : lang["suspend_message_2"])
 }
 
 exit:
-message("script finalizado")
+message(lang["finish"])
 exitapp
