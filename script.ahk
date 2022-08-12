@@ -90,7 +90,7 @@ return
 
 folderConverter:
 folderPath := getPath()
-MsgBox, 4,% lang["attention"],% lang["path_folder_1"] " " folderPath lang["folder_path_2"]
+MsgBox, 4,% lang["attention"],% lang["path_folder_1"] " " folderPath lang["path_folder_2"]
 IfMsgBox no
 	FileSelectFolder, folderPath, *, 2
 gui, add, text,,% lang["select_format"]
@@ -101,7 +101,7 @@ gui, show,,% lang["script_name"]
 return
 
 conversion() {
-	global folderPath, fileFormat, bitrate
+	global folderPath, fileFormat, bitrate, lang
 	gui, submit, hide
 	sleep 100
 	message(lang["converting"])
@@ -206,7 +206,10 @@ gui, list:destroy
 return
 
 readme:
-	run files\readme.html
+if (lang_value == "ES")
+	run files\readme-es.html
+else if (lang_value == "TR")
+	run files\readme-tr.html
 	return
 
 suspend() {
