@@ -93,7 +93,7 @@ if (!folderPath)
 	folderPath := getPath()
 gui, add, text,,% lang["path_folder_1"]
 gui, add, edit, ReadOnly,% folderPath
-gui, add, button, gBrowseFolder, Examinar
+gui, add, button, gBrowseFolder,% lang["browse"]
 Gui, Add, Text,,% lang["path_folder_2"]
 Gui, Add, TreeView
 audio := TV_Add(lang["audio"])
