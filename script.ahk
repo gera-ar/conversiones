@@ -96,7 +96,7 @@ gui, add, edit, ReadOnly,% folderPath
 gui, add, button, gBrowseFolder, Examinar
 Gui, Add, Text,,% lang["path_folder_2"]
 Gui, Add, TreeView
-audio := TV_Add("Audio")
+audio := TV_Add(lang["audio"])
 TV_Add("mp3", audio)
 TV_Add("flac", audio)
 TV_Add("m4a", audio)
@@ -104,14 +104,14 @@ TV_Add("ogg", audio)
 TV_Add("wav", audio)
 TV_Add("wma", audio)
 
-video := TV_Add("Video")
+video := TV_Add(lang["video"])
 TV_Add("mp4", video)
 TV_Add("avi", video)
 TV_Add("flv", video)
 TV_Add("mov", video)
 TV_Add("mkv", video)
 
-document := TV_Add("Documento")
+document := TV_Add(lang["document"])
 TV_Add("rtf", document)
 TV_Add("html", document)
 TV_Add("md", document)
@@ -142,7 +142,7 @@ conversion() {
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		if (type == "Documento") {
+		if (type == lang["document"]) {
 			command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%convert_folder_name%\%name%.%fileFormat%" "%a_loopFileFullPath%"
 			runWait cmd.exe /c %command%,, hide
 		} else {
