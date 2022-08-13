@@ -89,20 +89,52 @@ menu, conversiones, show
 return
 
 folderConverter:
-folderPath := getPath()
-MsgBox, 4,% lang["attention"],% lang["path_folder_1"] " " folderPath lang["path_folder_2"]
-IfMsgBox no
-	FileSelectFolder, folderPath, *, 2
-gui, add, text,,% lang["select_format"]
-gui, add, listBox, vFileFormat, mp3||flac|m4a|ogg|wav|wma|mp4|avi|flv|mov|mkv
+if (!folderPath)
+	folderPath := getPath()
+gui, add, text,,% lang["path_folder_1"]
+gui, add, edit, ReadOnly,% folderPath
+gui, add, button, gBrowseFolder, Examinar
+Gui, Add, Text,,% lang["path_folder_2"]
+Gui, Add, TreeView
+audio := TV_Add("Audio")
+TV_Add("mp3", audio)
+TV_Add("flac", audio)
+TV_Add("m4a", audio)
+TV_Add("ogg", audio)
+TV_Add("wav", audio)
+TV_Add("wma", audio)
+
+video := TV_Add("Video")
+TV_Add("mp4", video)
+TV_Add("avi", video)
+TV_Add("flv", video)
+TV_Add("mov", video)
+TV_Add("mkv", video)
+
+document := TV_Add("Documento")
+TV_Add("rtf", document)
+TV_Add("html", document)
+TV_Add("md", document)
+TV_Add("txt", document)
+TV_Add("wma", audio)
+
 gui, add, button, gConversion,% lang["start_conversion"]
 gui, add, button, gCloseGui,% lang["cancel"]
 gui, show,,% lang["script_name"]
 return
 
+BrowseFolder:
+gui, destroy
+FileSelectFolder, folderPath, *, 2
+gosub folderConverter
+return
+
 conversion() {
 	global folderPath, fileFormat, bitrate, lang
 	gui, submit, hide
+	id := TV_GetSelection()
+	TV_GetText(fileFormat, id)
+	TV_GetText(type, TV_GetParent(id))
 	sleep 100
 	message(lang["converting"])
 	convert_folder_name := lang["convert_folder_name"]
@@ -110,8 +142,13 @@ conversion() {
 	loop, files, %folderPath%\*.*, R
 	{
 		splitPath, a_loopFileFullPath, fileName, dirName, extensionName, name, outDrive
-		RunWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\%convert_folder_name%\%name%.%fileFormat%",, hide
-		message(fileName)
+		if (type == "Documento") {
+			command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%convert_folder_name%\%name%.%fileFormat%" "%a_loopFileFullPath%"
+			runWait cmd.exe /c %command%,, hide
+		} else {
+			RunWait cmd.exe /c %a_workingDir%\files\ffmpeg.exe -i "%a_loopFileFullPath%" -b:a %bitrate%000 "%dirName%\%convert_folder_name%\%name%.%fileFormat%",, hide
+			message(fileName)
+		}
 	}
 	soundPlay files\finish.mp3
 	gui, destroy
@@ -203,7 +240,9 @@ commands()
 return
 
 ListGuiEscape:
+GuiEscape:
 gui, list:destroy
+gui, destroy
 return
 
 readme:
