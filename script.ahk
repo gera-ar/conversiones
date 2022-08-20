@@ -115,8 +115,9 @@ document := TV_Add(lang["document"])
 TV_Add("rtf", document)
 TV_Add("html", document)
 TV_Add("md", document)
+TV_Add("docx", document)
+TV_Add("epub", document)
 TV_Add("txt", document)
-TV_Add("wma", audio)
 
 gui, add, button, gConversion,% lang["start_conversion"]
 gui, add, button, gCloseGui,% lang["cancel"]
@@ -199,11 +200,12 @@ otros(itemName, itemPos, menuName) {
 	SplitPath, filePath, fileName, dirName, extensionName, name, outDrive
 	sleep 50
 	inputBox, extension, Por favor ingresa la extensión a convertir sin el punto
-	if menuName = "documento"
+	if (MenuName == "documento")
 		command = %a_workingDir%\files\pandoc.exe -o "%dirName%\%name%.%extension%" "%filePath%"
-	else if (menuName="audio" or menuName="video")
+	else if (menuName == "audio" or menuName = "video")
 		command = %a_workingDir%\files\ffmpeg.exe -i "%filePath%" -b:a %bitrate%000 "%dirName%\%name%.%extension%"
 	runWait cmd.exe /c %command%,, hide
+	message(lang["convert_to"] " " itemName)
 	soundPlay files\finish.mp3
 }
 
