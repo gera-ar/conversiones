@@ -11,7 +11,8 @@ hks := array()
 hks[1] := ["^f4", "fileConverter", lang["convert_file"]]
 hks[2] := ["+f4", "folderConverter", lang["convert_folder"]]
 hks[3] := ["^+f4", "suspend", lang["toggle_suspend"]]
-hks[4] := ["^+q", "exit", lang["script_close"]]
+hks[4] := ["^+space", "play", lang["play"]]
+hks[5] := ["^+q", "exit", lang["script_close"]]
 
 soundPlay files\start.mp3
 
@@ -77,6 +78,12 @@ LangWrite(ItemName) {
 		IniWrite, TR, files\settings.ini, language, value
 	reload
 }
+
+play:
+filePath := getFilePath()
+command = files\ffplay "%file_path%"
+RunWait, cmd.exe /c %command%,, hide
+return
 
 audio_bitrate:
 	iniWrite, %a_thisMenuItem%, files\settings.ini, audio_bitrate, value	
