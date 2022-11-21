@@ -9,9 +9,22 @@ La idea de este script es realizar conversiones rápidamente con solo enfocar el
 * control + f4; Convierte el archivo con el foco actual.
 * shift + f4; Convierte todos los archivos que se encuentran en la carpeta actual, incluyendo las subcarpetas.
 * control + shift + f4; suspende y reanuda los atajos del script.
+* control + barra espaciadora; reproduce una vista previa del archivo con el foco
 * control + shift + q; Cierra el script.
 
 Pulsando aplicaciones sobre el ícono de la bandeja de sistemas Conversiones, se puede modificar la calidad del audio resultante a través del bitrate. El valor por defecto es 128 kbps.
+
+## Vista previa
+
+Al pulsar el atajo asignado para la vista previa se abre una pequeña ventana en la que podremos utilizar los siguientes comandos:
+
+* Barra espaciadora; pausar y reanudar la reproducción
+*9 (alfanumérico); disminuir el volúmen de la reproducción
+* 0 (alfanumérico); aumentar el volúmen de la reproducción
+*m; conmutar el silencio
+* flechas izquierda y derecha; retroceder y adelantar la reproducción 10 segundos
+* flechas arriba y abajo; adelantar y retroceder la reproducción un minuto
+* q o escape; cierra la vista previa
 
 ## ¿Como funciona?
 
